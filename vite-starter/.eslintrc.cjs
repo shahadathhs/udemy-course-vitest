@@ -1,6 +1,9 @@
 const vitest = require("eslint-plugin-vitest");
 
 module.exports = {
+  globals: {
+    ...vitest.environments.env.globals,
+  },
   root: true,
   env: { browser: true, es2020: true },
   extends: [
@@ -10,6 +13,7 @@ module.exports = {
     "plugin:react-hooks/recommended",
     "plugin:vitest/recommended",
     "plugin:jest-dom/recommended",
+    'plugin:testing-library/react',
   ],
   ignorePatterns: ["dist", ".eslintrc.cjs"],
   parserOptions: { ecmaVersion: "latest", sourceType: "module" },
