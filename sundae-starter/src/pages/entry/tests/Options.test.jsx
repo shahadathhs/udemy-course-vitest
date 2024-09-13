@@ -1,33 +1,33 @@
-import { render, screen } from '../../../test-utils/testing-library-utils';
-import Options from '../Options';
+import { render, screen } from "../../../test-utils/testing-library-utils";
+import Options from "../Options";
 
-describe('Tests for Options', () => {
-  it('displays image for each scoop option from server', async() => {
-    render(<Options optionType="scoops" />);
+test("displays image for each scoop option from server", async () => {
+  render(<Options optionType="scoops" />);
 
-    // find images
-    const scoopImages = await screen.findAllByRole('img', {
-      name: /scoop$/i
-    })
+  // find images
+  const scoopImages = await screen.findAllByRole("img", { name: /scoop$/i });
+  expect(scoopImages).toHaveLength(2);
 
-    expect(scoopImages).toHaveLength(2)
+  // confirm alt text of images
+  // @ts-ignore
+  const altText = scoopImages.map((element) => element.alt);
+  expect(altText).toEqual(["Chocolate scoop", "Vanilla scoop"]);
+});
 
-    // confirm alt text of images
-    const altText = scoopImages.map(element => element.alt)
+test("Displays image for each toppings option from server", async () => {
+  // Mock Service Worker will return three toppings from server
+  render(<Options optionType="toppings" />);
 
-    expect(altText).toEqual(['Chocolate scoop', 'Strawberry scoop'])
-  })
+  // find images, expect 3 based on what msw returns
+  const images = await screen.findAllByRole("img", { name: /topping$/i });
+  expect(images).toHaveLength(3);
 
-  it('Should display image for each topping option from server', async() => {
-    render(<Options optionType="toppings" />)
-
-    const toppingImages = await screen.findAllByRole('img', {
-      name: /topping$/i
-    })
-
-    expect(toppingImages).toHaveLength(3)
-
-    const altText = toppingImages.map(element => element.alt)
-    expect(altText).toEqual(['Cherries topping', 'M&Ms topping', 'Hot fudge topping'])
-  })
-})
+  // check the actual alt text for the images
+  // @ts-ignore
+  const imageTitles = images.map((img) => img.alt);
+  expect(imageTitles).toEqual([
+    "Cherries topping",
+    "M&Ms topping",
+    "Hot fudge topping",
+  ]);
+});
